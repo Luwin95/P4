@@ -1,0 +1,44 @@
+
+{% extends "layout.html.twig" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block pageTitle %}Accueil{% endblock %}
+{% block content %}
+    <div class="row">
+    {% if chapters %}
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Dernier chapitre publié</h2>
+                </div>
+                <div class="panel-body">
+                  <h3>{{ chapters[1].title }}</h4>
+                  <p>{{ chapters[1].content }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="">
+                <div class="panel-group">
+                    {% for chapter in chapters %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3>{{ chapter.title }}</h3>
+                            </div>
+                            <div class="panel-body">
+
+                                <p>{{ chapter.content }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <div class="alert alert-warning">
+                No chapter found.
+            </div>
+    {% endif %}
+    </div>   
+{% endblock %}{# empty Twig template #}

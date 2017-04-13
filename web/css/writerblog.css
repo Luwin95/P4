@@ -1,0 +1,28 @@
+body
+{
+    padding-top : 50px;
+}
+
+#content
+{
+    padding-top : 20px;
+}
+
+.panorama
+{
+    background-color: black;
+}
+
+#panorama-img
+{
+    height: auto; 
+    width: auto; 
+    max-height: 400px;
+    max-width: 100%;
+}
+
+#panorama-title
+{
+    padding-bottom: 10px;
+    font-family: Courier, monospace;
+}
