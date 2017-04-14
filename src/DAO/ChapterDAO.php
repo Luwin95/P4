@@ -7,6 +7,25 @@ use WriterBlog\Domain\Chapter;
 class ChapterDAO extends DAO
 {
     /**
+     * Returns a chapter matching the supplied id.
+     *
+     * @param integer $id
+     *
+     * @return \WriterBlog\Domain\Chapter|throws an exception if no matching article is found
+     */
+    public function find($id) {
+        $sql = "select * from t_chapter where chapter_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+        if ($row)
+        {
+            return $this->buildDomainObject($row);
+        }else{
+            throw new \Exception("No chapter matching id " . $id);
+        }
+    }
+
+    /**
      * Returns a list of all chapters, sorted by id.
      *
      * @return array A list of all chapters.

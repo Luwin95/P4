@@ -13,7 +13,7 @@
                     <h3>Dernier chapitre publié</h3>
                 </div>
                 <div class="panel-body">
-                  <h3>{{ chapters[1].title }}</h3>
+                    <h3><a class="chapterTitle" href="{{ path('chapter', { 'id': chapters[1].id }) }}">{{ chapters[1].title }}</a></h3>
                   <p>{{ chapters[1].content }}</p>
                 </div>
             </div>
@@ -24,10 +24,9 @@
                     {% for chapter in chapters %}
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3>{{ chapter.title }}</h3>
+                                <h3><a class="chapterTitle" href="{{ path('chapter', { 'id': chapter.id }) }}">{{ chapter.title }}</a></h3>
                             </div>
                             <div class="panel-body">
-
                                 <p>{{ chapter.content }}</p>
                             </div>
                         </div>

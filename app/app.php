@@ -36,6 +36,12 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     ),
 ));
 
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+    'monolog.logfile' => __DIR__.'/../var/logs/writerblog.log',
+    'monolog.name' => 'WriterBlog',
+    'monolog.level' => $app['monolog.level']
+));
+
 // Register services
 $app['dao.chapter'] = function ($app) {
     $chapterDAO = new WriterBlog\DAO\ChapterDAO($app['db']);
