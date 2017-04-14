@@ -26,3 +26,14 @@ body
     padding-bottom: 10px;
     font-family: Courier, monospace;
 }
+
+.config-menu
+{
+    margin : 10px 0px 10px
+}
+
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-darkgray,
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-darkgray {
+    color: #9B9D9D;
+    background: #222222;
+}
