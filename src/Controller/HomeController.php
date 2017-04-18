@@ -27,6 +27,20 @@ class HomeController
     public function chapterAction($id, Application $app)
     {
         $chapter = $app['dao.chapter']->find($id);
-        return $app['twig']->render('home/chapter.html.twig', array('chapter' => $chapter));
+        $comments = $app['dao.comment']->findAllByChapter($id);
+        $commentsSorted = [];
+        foreach($comments as $comment)
+        {
+            $commentsSorted[$comment->getId()] = $comment;
+        }
+        foreach($comments as $key => $comment)
+        {
+            if($comment->getParent()!=Null)
+            {
+                $commentsSorted[$comment->getParent()->getId()]->addChildren($comment);
+                unset($comments[$key]);
+            }
+        }
+        return $app['twig']->render('home/chapter.html.twig', array('chapter' => $chapter, 'comments' =>$comments));
     }
 }

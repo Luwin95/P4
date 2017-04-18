@@ -15,3 +15,12 @@ create table t_user (
     user_salt varchar(23) not null,
     user_role varchar(50) not null
 ) engine=innodb character set utf8 collate utf8_unicode_ci;
+
+create table t_comment (
+    comment_id integer not null primary key auto_increment,
+    comment_date datetime not null,
+    comment_content varchar(88) not null,
+    chapter_id integer not null,
+    user_id integer not null,
+    parent_id integer default null
+) engine=innodb character set utf8 collate utf8_unicode_ci;

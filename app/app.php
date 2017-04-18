@@ -52,3 +52,11 @@ $app['dao.user'] = function ($app) {
     $userDAO = new WriterBlog\DAO\UserDAO($app['db']);
     return $userDAO;
 };
+
+$app['dao.comment'] = function ($app) {
+    $commentDAO = new WriterBlog\DAO\CommentDAO($app['db']);
+    $commentDAO->setChapterDAO($app['dao.chapter']);
+    $commentDAO->setUserDAO($app['dao.user']);
+    //$commentDAO->setCommentDAO($app['dao.comment']);
+    return $commentDAO;
+};

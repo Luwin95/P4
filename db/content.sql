@@ -15,3 +15,23 @@ insert into t_user values
 insert into t_user values
 (3, 'admin', '$2y$13$A8MQM2ZNOi99EW.ML7srhOJsCaybSbexAj/0yXrJs4gQ/2BqMMW2K', 'EDDsl&fBCJB|a5XUtAlnQN8', 'ROLE_ADMIN');
 
+insert into t_comment values
+(1, '2017-03-25 15:00:00' , 'Great! Keep up the good work.', 2,1,0);
+insert into t_comment values
+(2, '2017-04-15 15:55:00', "Thank you, I'll try my best.", 2,2,0);
+insert into t_comment values
+(3, '2017-04-16 10:20:52', "Awesome blog you should have a poulitzer", 2,3,2);
+insert into t_comment values
+(4, '2017-04-16 11:15:47', "Don't exagerate ! But thx !", 2,2,3);
+insert into t_comment values
+(5, '2017-04-17 00:14:18', "I agree it's so great !", 2,1,3);
+insert into t_comment values
+(6, '2017-04-18 12:32:20', "Best of the chapters I love it !", 2,1,2);
+insert into t_comment values
+(7, '2017-04-18 17:28:14', "Thanks !", 2,2,6);
+insert into t_comment values
+(8, '2017-04-19 02:17:18', "Bravo !", 2,1,0);
+insert into t_comment values
+(9, '2017-04-18 12:32:20', "J'ai adoré génial", 2,1,8);
+insert into t_comment values
+(10, '2017-04-18 22:28:14', "Moi aussi continue comme ça !", 2,3,8);

@@ -25,4 +25,34 @@
             </div>
         {% endif %}
     </div>
+    <div class="row">
+        
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Commentaires</h3>
+                        {% if comments %}
+                        <div class="panel-body">    
+                                {% for comment in comments %}
+                                    <div class ="panel panel-default">
+                                        <div class="panel-heading">                                
+                                            {{ comment.author.username }} le {{comment.date|date('d/m/y')}}
+                                        </div>
+                                        <div class ="panel-body">
+                                            {{ comment.content }}
+                                        </div>
+                                    </div>
+                                    <div style="margin-left: 70px">
+                                        {% if comment.children != null %}
+                                            {%include 'home/comment.html.twig' with {'comments': comment.children} %}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                        </div>
+                        {% else %}
+                            <div class="panel-body">
+                                Ce chapitre n'a pas été commenté. Laissez un message à l'auteur !
+                            </div>
+                        {% endif %}
+            </div>
+    </div>
 {% endblock %}{# empty Twig template #}

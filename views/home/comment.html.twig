@@ -1,0 +1,15 @@
+{% for comment in comments %}
+    <div class ="panel panel-default">
+        <div class="panel-heading">                                
+            {{ comment.author.username }} le {{comment.date|date('d/m/y')}}
+        </div>
+        <div class ="panel-body">
+            {{ comment.content }}
+        </div>
+    </div>
+    <div style="margin-left: 50px">
+        {% if comment.children != null %}
+            {%include 'home/comment.html.twig' with {'comments': comment.children} %}
+        {% endif %}
+    </div>
+{% endfor %}
