@@ -5,6 +5,11 @@
 
 {% block pageTitle %}{{ chapter.title }}{% endblock %}
 {% block content %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
     <div class="row">
         {% if chapter %}
             <div class="">
@@ -26,24 +31,60 @@
         {% endif %}
     </div>
     <div class="row">
-        
+        <div class="panel panel-default">
+            <div class ="panel-heading">
+                <h3>Ajouter un commentaire</h3>
+            </div>
+            <div class="panel-body" id="commentForm">
+                {% if commentForm %}
+                    {{ form_start(commentForm) }}
+                    <div class="form-group">
+                        {{ form_errors(commentForm.content) }}
+                        {{ form_widget(commentForm.content, { 'attr':  {
+                            'rows': '4',
+                            'class': 'form-control',
+                            'placeholder': 'Entrez votre commentaire ici'
+                        }}) }}
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Commenter" />
+                    </div>
+                    {{ form_end(commentForm) }}
+                {% else %}
+                    <a href="{{ path('login') }} ">Connectez-vous</a> pour ajouter des commentaires.
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3>Commentaires</h3>
                         {% if comments %}
-                        <div class="panel-body">    
+                        
+                        <div class="panel-body">
                                 {% for comment in comments %}
+                                    {% set rank=0 %}
                                     <div class ="panel panel-default">
                                         <div class="panel-heading">                                
                                             {{ comment.author.username }} le {{comment.date|date('d/m/y')}}
                                         </div>
                                         <div class ="panel-body">
                                             {{ comment.content }}
+                                            <br/>
+                                            <br/>
+                                            {% if commentForm %}
+                                                <button type="button" class="btn btn-primary repondre" id="{{comment.id}}">Répondre</button>    
+                                            {% else %}
+                                                <a href="{{ path('login') }} ">Connectez-vous</a> pour ajouter des commentaires.
+                                            {% endif %}
                                         </div>
                                     </div>
-                                    <div style="margin-left: 70px">
+                                    <div style="margin-left: 30px">
                                         {% if comment.children != null %}
-                                            {%include 'home/comment.html.twig' with {'comments': comment.children} %}
+                                            {% set rank=rank+1 %}
+                                            {%include 'home/comment.html.twig' with {'comments': comment.children, 'rank' : rank} %}
                                         {% endif %}
                                     </div>
                                 {% endfor %}
@@ -53,6 +94,10 @@
                                 Ce chapitre n'a pas été commenté. Laissez un message à l'auteur !
                             </div>
                         {% endif %}
+                </div>
             </div>
     </div>
 {% endblock %}{# empty Twig template #}
+{% block javascript %}
+    <script src="{{ asset('../js/answerComment.js') }}"></script>
+{% endblock %}

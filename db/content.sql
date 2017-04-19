@@ -18,20 +18,20 @@ insert into t_user values
 insert into t_comment values
 (1, '2017-03-25 15:00:00' , 'Great! Keep up the good work.', 2,1,0);
 insert into t_comment values
-(2, '2017-04-15 15:55:00', "Thank you, I'll try my best.", 2,2,0);
+(2, '2017-04-14 15:55:00', "Thank you, I'll try my best.", 2,2,0);
 insert into t_comment values
-(3, '2017-04-16 10:20:52', "Awesome blog you should have a poulitzer", 2,3,2);
+(3, '2017-04-15 10:20:52', "Awesome blog you should have a poulitzer", 2,3,2);
 insert into t_comment values
-(4, '2017-04-16 11:15:47', "Don't exagerate ! But thx !", 2,2,3);
+(4, '2017-04-15 11:15:47', "Don't exagerate ! But thx !", 2,2,3);
 insert into t_comment values
-(5, '2017-04-17 00:14:18', "I agree it's so great !", 2,1,3);
+(5, '2017-04-16 00:14:18', "I agree it's so great !", 2,1,3);
 insert into t_comment values
-(6, '2017-04-18 12:32:20', "Best of the chapters I love it !", 2,1,2);
+(6, '2017-04-16 12:32:20', "Best of the chapters I love it !", 2,1,2);
 insert into t_comment values
-(7, '2017-04-18 17:28:14', "Thanks !", 2,2,6);
+(7, '2017-04-16 17:28:14', "Thanks !", 2,2,6);
 insert into t_comment values
-(8, '2017-04-19 02:17:18', "Bravo !", 2,1,0);
+(8, '2017-04-17 02:17:18', "Bravo !", 2,1,0);
 insert into t_comment values
-(9, '2017-04-18 12:32:20', "J'ai adoré génial", 2,1,8);
+(9, '2017-04-17 12:32:20', "J'ai adoré génial", 2,1,8);
 insert into t_comment values
-(10, '2017-04-18 22:28:14', "Moi aussi continue comme ça !", 2,3,8);
+(10, '2017-04-17 22:28:14', "Moi aussi continue comme ça !", 2,3,8);

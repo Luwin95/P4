@@ -1,15 +1,26 @@
 {% for comment in comments %}
     <div class ="panel panel-default">
+        {% set rank=rank %}
         <div class="panel-heading">                                
             {{ comment.author.username }} le {{comment.date|date('d/m/y')}}
         </div>
         <div class ="panel-body">
             {{ comment.content }}
+            {% if rank<=3 %}
+                <br/>
+                <br/>
+                {% if commentForm %}
+                    <button type="button" class="btn btn-primary repondre" id="{{comment.id}}">Répondre</button>    
+                {% else %}
+                    <a href="{{ path('login') }} ">Connectez-vous</a> pour ajouter des commentaires.
+                {% endif %}
+            {% endif %}
         </div>
     </div>
-    <div style="margin-left: 50px">
+    <div style="margin-left: 30px">
         {% if comment.children != null %}
-            {%include 'home/comment.html.twig' with {'comments': comment.children} %}
+            {% set rank=rank+1 %}
+            {%include 'home/comment.html.twig' with {'comments': comment.children, 'rank' : rank} %}
         {% endif %}
     </div>
 {% endfor %}
