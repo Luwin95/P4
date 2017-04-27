@@ -1,0 +1,27 @@
+{% extends "layout.html.twig" %}
+{% set adminMenu = true %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block pageTitle %} {{title}} {% endblock %}
+
+{% block content %}
+    <div class="well">
+        {% if commentForm %}
+            {{ form_start(commentForm) }}
+            <div class="form-group">
+                {{ form_errors(commentForm.content) }}
+                {{ form_widget(commentForm.content, { 'attr':  {
+                    'rows': '4',
+                    'class': 'form-control',
+                    'placeholder': 'Entrez votre commentaire ici'
+                }}) }}
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Commenter" />
+            </div>
+            {{ form_end(commentForm) }}
+        {% else %}
+        {% endif %}
+    </div>
+{% endblock %}

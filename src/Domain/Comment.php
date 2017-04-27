@@ -38,7 +38,7 @@ class Comment
      * @var \WriterBlog\Domain\User
      */
     private $author;
-    
+
     /**
      * Comment parent if exist (else null).
      *
@@ -52,6 +52,13 @@ class Comment
      * @var \WriterBlog\Domain\Comment
      */
     private $children;
+
+    /**
+     * Comment reported status.
+     *
+     * @var \WriterBlog\Domain\User
+     */
+    private $reported;
     
     public function getId() {
         return $this->id;
@@ -113,6 +120,13 @@ class Comment
     public function addChildren(Comment $children) {
         $this->children[] = $children;
     }
-    
+
+    public function getReported() {
+        return $this->reported;
+    }
+
+    public function setReported($reported) {
+        $this->reported = $reported;
+    }
    
 }

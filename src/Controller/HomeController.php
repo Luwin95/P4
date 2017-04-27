@@ -6,7 +6,11 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use WriterBlog\Domain\Chapter;
 use WriterBlog\Domain\Comment;
+use WriterBlog\Domain\User;
 use WriterBlog\Form\Type\CommentType;
+use WriterBlog\Form\Type\UserSigninType;
+use WriterBlog\Services\CommentManagementService;
+use WriterBlog\Services\UserManagementService;
 
 class HomeController
 {
@@ -18,6 +22,7 @@ class HomeController
     public function indexAction(Application $app) 
     {
         $chapters = $app['dao.chapter']->findAllPublished();
+        //$nbPages = ceil(count($chapters) / 5);
         return $app['twig']->render('home/index.html.twig', array('chapters' => $chapters));
     }
 
@@ -30,29 +35,15 @@ class HomeController
     {
         $chapter = $app['dao.chapter']->find($id);
         $comments = $app['dao.comment']->findAllByChapter($id);
-        $commentsSorted = [];
-        foreach($comments as $comment)
-        {
-            $commentsSorted[$comment->getId()] = $comment;
-        }
-        foreach($comments as $key => $comment)
-        {
-            if($comment->getParent()!=Null)
-            {
-                $commentsSorted[$comment->getParent()->getId()]->addChildren($comment);
-                unset($comments[$key]);
-            }
-        }
+
+        $commentManagementService = new CommentManagementService();
+        $commentManagementService->setApplication($app);
+        $commentsSorted = $commentManagementService->commentTabGenerator($comments);
 
         $commentFormView = null;
-
         if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY'))
         {
-            $comment = new Comment();
-            $comment->setChapter($chapter);
-            $comment->setAuthor($app['user']);
-            $date = date('Y-m-d H:i:s');;
-            $comment->setDate($date);
+            $comment = $commentManagementService->registerNewComment($chapter);
             $commentForm = $app['form.factory']->create(CommentType::class, $comment);
             $commentForm->handleRequest($request);
             if ($commentForm->isSubmitted() && $commentForm->isValid())
@@ -66,11 +57,18 @@ class HomeController
                 return $app->redirect($app["url_generator"]->generate("chapter", [
                     "id" => $id
                 ]));
-                
             }
             $commentFormView = $commentForm->createView();
         }
-        return $app['twig']->render('home/chapter.html.twig', array('chapter' => $chapter, 'comments' =>$comments, 'commentForm' => $commentFormView));
+        if(isset($_POST['report']))
+        {
+            $commentManagementService->reportComment($_POST['report_id']);
+            $app['session']->getFlashBag()->add('warning', 'Le commentaire a bien été signalé');
+            return $app->redirect($app["url_generator"]->generate("chapter", [
+                "id" => $id
+            ]));
+        }
+        return $app['twig']->render('home/chapter.html.twig', array('chapter' => $chapter, 'comments' =>$commentsSorted, 'commentForm' => $commentFormView));
     }
     
     public function loginAction(Application $app, Request $request)
@@ -79,5 +77,22 @@ class HomeController
         'error'         => $app['security.last_error']($request),
         'last_username' => $app['session']->get('_security.last_username'),
     ));
+    }
+
+    public function signInAction(Application $app, Request $request)
+    {
+        $userManagementService = new UserManagementService();
+        $userManagementService->setApplication($app);
+
+        $user = new User();
+        $userForm = $app['form.factory']->create(UserSigninType::class, $user);
+        $userForm->handleRequest($request);
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $userManagementService->registerNewUser($user,false);
+            return $app->redirect($app["url_generator"]->generate("home"));
+        }
+        return $app['twig']->render('home/signin.html.twig', array(
+            'title' => 'Inscription',
+            'userForm' => $userForm->createView()));
     }
 }

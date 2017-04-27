@@ -22,5 +22,6 @@ create table t_comment (
     comment_content varchar(88) not null,
     chapter_id integer not null,
     user_id integer not null,
-    parent_id integer default null
+    parent_id integer default null,
+    comment_reported boolean not null
 ) engine=innodb character set utf8 collate utf8_unicode_ci;

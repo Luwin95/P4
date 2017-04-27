@@ -1,0 +1,52 @@
+{% extends "layout.html.twig" %}
+{% set adminMenu = true %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block pageTitle %} {{title}} {% endblock %}
+
+{% block content %}
+
+<div class="well">
+    {% if chapterForm %}
+                    {{ form_start(chapterForm) }}
+                    <div class="row">
+                        <div class="form-group">
+                                {{ form_errors(chapterForm.title) }}
+                            <div class="col-sm-1 pul-right">
+                                {{ form_label(chapterForm.title, 'Titre') }}
+                            </div>
+                            <div class="col-sm-11">
+                                {{ form_widget(chapterForm.title, {'attr' : {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style ="margin-top : 20px;">  
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                {{ form_errors(chapterForm.content) }}
+                                {{ form_widget(chapterForm.content, {'attr' : {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">     
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                {{ form_errors(chapterForm.publishment) }}
+                                {{ form_widget(chapterForm.publishment) }}
+                                {{ form_label(chapterForm.publishment, 'Voulez-vous publier ce chapitre ? (laisser la case décocher pour sauvegarder le chapitre sans le publier)') }}
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-info" value="Sauvegarder" />
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(chapterForm) }}
+                {% else %}
+    {% endif %}
+</div>
+{% endblock %}
+{% block javascript %}
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=z136fxlj4sh616bt3vecqtubqy4v8okoz5vkm6gzwnfrhc3c"></script>
+    <script src="{{ asset('../js/tinymceConfig.js') }}"></script>
+{% endblock %}

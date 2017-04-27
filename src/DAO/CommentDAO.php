@@ -45,6 +45,27 @@ class CommentDAO extends DAO
     }
     
     /**
+     * Returns all comments.
+     *
+     * @param integer $chapterId
+     *
+     * @return \WriterBlog\Domain\Comment|throws an exception if no matching article is found
+     */
+    public function findAll() {
+        $sql = "select * from t_comment order by chapter_id";
+        $result = $this->getDb()->fetchAll($sql);
+        
+        $comments = array();
+        
+        foreach($result as $row) {
+            $id = $row['comment_id'];
+            $comments[$id] = $this->buildDomainObject($row);
+        }
+        return $comments;
+        
+    }
+    
+    /**
      * Returns all comments matching a chapter id.
      *
      * @param integer $chapterId
@@ -53,19 +74,60 @@ class CommentDAO extends DAO
      */
     public function findAllByChapter($chapterId) {
         $chapter = $this->chapterDAO->find($chapterId);
-        
-        $sql = "select comment_id, comment_date, comment_content, user_id, parent_id from t_comment where chapter_id=?";
+
+        $sql = "select comment_id, comment_date, comment_content, user_id, parent_id,comment_reported from t_comment where chapter_id=?";
         $result = $this->getDb()->fetchAll($sql, array($chapterId));
-        
+
         $comments = array();
-        
+
         foreach($result as $row) {
             $comment = $this->buildDomainObject($row);
             $comment->setChapter($chapter);
             $comments[$row['comment_id']] = $comment;
         }
         return $comments;
-        
+
+    }
+
+    /**
+     * Returns all comments matching a parent id.
+     *
+     * @param integer $parentId
+     *
+     * @return \WriterBlog\Domain\Comment|throws an exception if no matching article is found
+     */
+    public function findAllByParent($parentId) {
+        $sql = "select comment_id, comment_date, comment_content, user_id, parent_id,comment_reported from t_comment where parent_id=?";
+        $result = $this->getDb()->fetchAll($sql, array($parentId));
+
+        $comments = array();
+
+        foreach($result as $row) {
+            $comment = $this->buildDomainObject($row);
+            $comments[$row['comment_id']] = $comment;
+        }
+        return $comments;
+
+    }
+
+    /**
+     * Returns all comments matching an author
+     *
+     * @param integer $userId
+     *
+     * @return \WriterBlog\Domain\Comment|throws an exception if no matching article is found
+     */
+    public function findAllByAuthor($userId) {
+        $sql = "select comment_id, comment_date, comment_content, user_id, parent_id,comment_reported from t_comment where user_id=?";
+        $result = $this->getDb()->fetchAll($sql, array($userId));
+
+        $comments = array();
+
+        foreach($result as $row) {
+            $comment = $this->buildDomainObject($row);
+            $comments[$row['comment_id']] = $comment;
+        }
+        return $comments;
     }
     
     /**
@@ -82,25 +144,73 @@ class CommentDAO extends DAO
             $parentId = 0;
         }
 
+        if(!$comment->getReported())
+        {
+            $reported = 0;
+        }else{
+            $reported = 1;
+        }
+
         $commentData = array(
             'comment_content' => $comment->getContent(),
             'comment_date' => $comment->getDate(),
             'chapter_id' => $comment->getChapter()->getId(),
             'user_id' => $comment->getAuthor()->getId(),
-            'parent_id' => $parentId
+            'parent_id' => $parentId,
+            'comment_reported' => $reported,
             );
         
         
 
         if ($comment->getId()) {
             // The comment has already been saved : update it
-            $this->getDb()->update('t_comment', $commentData, array('com_id' => $comment->getId()));
+            $this->getDb()->update('t_comment', $commentData, array('comment_id' => $comment->getId()));
         } else {
             // The comment has never been saved : insert it
             $this->getDb()->insert('t_comment', $commentData);
             // Get the id of the newly created comment and set it on the entity.
             $id = $this->getDb()->lastInsertId();
             $comment->setId($id);
+        }
+    }
+
+    /**
+     * Removes a comment matching and all its children
+     *
+     * @param $commentId The id of the chapter
+     */
+    public function delete($id) {
+
+        if($this->findAllByParent($id) != NULL)
+        {
+            $children = $this->findAllByParent($id);
+            foreach($children as $child)
+            {
+                $this->delete($child->getId());
+            }
+        }
+        $this->getDb()->delete('t_comment', array('comment_id' => $id));
+    }
+
+    /**
+     * Removes all comments for a chapter
+     *
+     * @param $chapterId The id of the chapter
+     */
+    public function deleteAllByChapter($chapterId) {
+        $this->getDb()->delete('t_comment', array('chapter_id' => $chapterId));
+    }
+
+    /**
+     * Removes all comments written by a specific user (and there children)
+     *
+     * @param $userId The id of the chapter
+     */
+    public function deleteAllByUser($userId) {
+        $commentsToDelete = $this->findAllByAuthor($userId);
+        foreach($commentsToDelete as $commentToDelete)
+        {
+            $this->delete($commentToDelete->getId());
         }
     }
 
@@ -117,6 +227,7 @@ class CommentDAO extends DAO
         $comment->setId($row['comment_id']);
         $comment->setDate($row['comment_date']);
         $comment->setContent($row['comment_content']);
+        $comment->setReported($row['comment_reported']);
         
         if(array_key_exists('chapter_id', $row)) {
             $chapter = $this->chapterDAO->find($row['chapter_id']);

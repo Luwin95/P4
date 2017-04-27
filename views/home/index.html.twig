@@ -5,6 +5,11 @@
 
 {% block pageTitle %}Accueil{% endblock %}
 {% block content %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
     <div class="row">
     {% if chapters %}
         <div class="col-md-3">
@@ -13,8 +18,10 @@
                     <h3>Dernier chapitre publié</h3>
                 </div>
                 <div class="panel-body">
-                    <h3><a class="chapterTitle" href="{{ path('chapter', { 'id': chapters[1].id }) }}">{{ chapters[1].title }}</a></h3>
-                  <p>{{ chapters[1].content }}</p>
+                    {% set lastChapter = chapters|first %}
+                    <h3><a class="chapterTitle" href="{{ path('chapter', { 'id': lastChapter.id }) }}">{{ lastChapter.title }}</a></h3>
+                    <p>{{ lastChapter.content|striptags|truncate(400)|raw }}</p>
+                    <a href="{{ path('chapter', { 'id': lastChapter.id }) }}" class="btn btn-default">Lire la suite</a>
                 </div>
             </div>
         </div>
@@ -27,7 +34,8 @@
                                 <h3><a class="chapterTitle" href="{{ path('chapter', { 'id': chapter.id }) }}">{{ chapter.title }}</a></h3>
                             </div>
                             <div class="panel-body">
-                                <p>{{ chapter.content }}</p>
+                                <p>{% autoescape %}{{ chapter.content|striptags|truncate(400)|raw }}{% endautoescape %}</p>
+                                <a href="{{ path('chapter', { 'id': chapter.id }) }}" class="btn btn-default">Lire la suite</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -36,7 +44,7 @@
         </div>
         {% else %}
             <div class="alert alert-warning">
-                No chapter found.
+                Aucun chapitre n'a été trouvé.
             </div>
     {% endif %}
     </div>   

@@ -1,3 +1,5 @@
 /vendor
 /app/config
+/web/img
+/web/lib
 composer.lock

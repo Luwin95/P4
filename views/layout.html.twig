@@ -7,11 +7,11 @@
         <link href="{{ asset('../lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('../css/writerblog.css') }}" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+        {% block stylesheet %}{% endblock %}
         <title>WriterBlog - {% block title %}{% endblock %}</title>
     </head>
 
     <body>
-      
           <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -20,11 +20,25 @@
                           <span class="icon-bar"></span>
                           <span class="icon-bar"></span>
                       </button>
-                      <a class="navbar-brand" href="/">WriterBlog</a>
+                      <a class="navbar-brand" href="/">Jean Forteroche</a>
                   </div>
                   <div class="collapse navbar-collapse" id="navbar-collapse-target">
                     <ul class = "nav navbar-nav">
-                          <li><a href="{{ path('home') }}">Accueil</a></li>
+                        <li><a href="{{ path('home') }}"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-book"></span> Derniers chapitres<b class="caret"></b>
+                            </a>
+                            {#<ul class="dropdown-menu">
+                                {% for chapter in chapters %}
+                                    <li><a href="{{ path('chapter', { 'id': chapter.id }) }}">{{ chapter.title|truncate(20) }}</a></li>
+                                {% endfor %}
+                            </ul>#}
+                        </li>
+
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                            <li class="{% if adminMenu is defined %}active{% endif %}"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Administration</a></li>
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -36,11 +50,12 @@
                                 </ul>
                             </li>
                         {% else %}
+                            <li><a href="{{ path('signin') }}"><span class="glyphicon glyphicon-plus"></span><span class="glyphicon glyphicon-user"></span>S'inscrire</a></li>
                             <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="glyphicon glyphicon-user"></span> Se connecter <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ path('login') }}">Log in</a></li>
+                                    <li><a href="{{ path('login') }}">Connexion</a></li>
                                 </ul>
                             </li>
                         {% endif %}
@@ -51,19 +66,20 @@
           </nav>
           <div class="container-fluid panorama">
              <div class="text-center ">
-                <img id="panorama-img" src="{{ asset('../img/background.jpg') }}" alt="Panorama">
+                    <img id="panorama-img" src="{{ asset('../img/background.jpg') }}" alt="Panorama">
                 <h1 id="panorama-title"><strong>{% block pageTitle %}{% endblock %}</strong></h1>
              </div>
           </div>
           <div id="page">
-              <div class="container-fluid">
-                  <div class="row config-menu">
-                      <div class="col-sm-6">
-                          <input id="toggle-switch" type="checkbox" name="toggle-switch" checked>
-                          <label>Couleur de fond : <span id="background-change">claire</span></label>
-                      </div>
-                  </div>
-              </div>
+              {% if adminMenu is not defined %}
+                <div class="container-fluid">
+                    <div class="row config-menu">
+                        <div class="col-sm-6">
+                            <input id="toggle-switch" type="checkbox" name="toggle-switch" checked>
+                        </div>
+                    </div>
+                </div>
+              {% endif %}
               <div class="container">
                   <div id="content">
                       {% block content %}{% endblock %}

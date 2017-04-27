@@ -1,0 +1,64 @@
+{% extends "layout.html.twig" %}
+{% set adminMenu = true %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block pageTitle %} {{title}} {% endblock %}
+
+{% block content %}
+    {% if form_errors(userForm.password.first) %}
+        <div class="alert alert-danger">
+            {{ form_errors(userForm.password.first) }}
+        </div>
+    {% endif %}
+    <div class="well">
+        {% if userForm %}
+            {{ form_start(userForm) }}
+            <div class="row">
+                <div class="form-group">
+                    {{ form_errors(userForm.username) }}
+                    <div class="col-sm-2">
+                        {{ form_label(userForm.username, 'Nom d\'utilisateur') }}
+                    </div>
+                    <div class="col-sm-10">
+                        {{ form_widget(userForm.username, {'attr' : {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    {{ form_label(userForm.password.first, null, { 'label_attr':  {
+                        'class': 'col-sm-2 control-label'
+                    }}) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(userForm.password.first, { 'attr':  {
+                            'class': 'form-control'
+                        }}) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    {{ form_label(userForm.password.second, null, { 'label_attr':  {
+                        'class': 'col-sm-2 control-label'
+                    }}) }}
+                    <div class="col-sm-10">
+                        {{ form_widget(userForm.password.second, { 'attr':  {
+                            'class': 'form-control'
+                        }}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-info" value="Sauvegarder" />
+                    </div>
+                </div>
+            </div>
+            {{ form_end(userForm) }}
+        {% else %}
+        {% endif %}
+    </div>
+{% endblock %}

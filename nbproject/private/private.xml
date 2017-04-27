@@ -4,15 +4,19 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/wamp64/www/writerblog/web/js/answerComment.js</file>
-            <file>file:/C:/wamp64/www/writerblog/views/home/chapter.html.twig</file>
             <file>file:/C:/wamp64/www/writerblog/views/home/login.html.twig</file>
+            <file>file:/C:/wamp64/www/writerblog/src/Controller/AdminController.php</file>
             <file>file:/C:/wamp64/www/writerblog/web/js/toggle_switch.js</file>
-            <file>file:/C:/wamp64/www/writerblog/src/DAO/CommentDAO.php</file>
+            <file>file:/C:/wamp64/www/writerblog/src/DAO/ChapterDAO.php</file>
             <file>file:/C:/wamp64/www/writerblog/app/routes.php</file>
-            <file>file:/C:/wamp64/www/writerblog/views/home/comment.html.twig</file>
             <file>file:/C:/wamp64/www/writerblog/views/layout.html.twig</file>
             <file>file:/C:/wamp64/www/writerblog/src/Controller/HomeController.php</file>
             <file>file:/C:/wamp64/www/writerblog/db/content.sql</file>
+            <file>file:/C:/wamp64/www/writerblog/views/home/chapter.html.twig</file>
+            <file>file:/C:/wamp64/www/writerblog/src/DAO/CommentDAO.php</file>
+            <file>file:/C:/wamp64/www/writerblog/views/home/comment.html.twig</file>
+            <file>file:/C:/wamp64/www/writerblog/views/admin/home.html.twig</file>
+            <file>file:/C:/wamp64/www/writerblog/composer.json</file>
             <file>file:/C:/wamp64/www/writerblog/db/structure.sql</file>
             <file>file:/C:/wamp64/www/writerblog/app/app.php</file>
         </group>

@@ -49,7 +49,7 @@ class ChapterDAO extends DAO
      * @return array A list of all chapters published.
      */
     public function findAllPublished() {
-        $sql = "select * from t_chapter where chapter_publishment=true order by chapter_id";
+        $sql = "select * from t_chapter where chapter_publishment=true order by chapter_id Desc";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects
@@ -59,6 +59,48 @@ class ChapterDAO extends DAO
             $entities[$id] = $this->buildDomainObject($row);
         }
         return $entities;
+    }
+    
+    /**
+     * Saves a chapter into the database.
+     *
+     * @param \WriterBlog\Domain\Chapter $chapter The chapter to save
+     */
+    public function save(Chapter $chapter) {
+        
+        if(!$chapter->getPublishment())
+        {
+            $publishment = 0;
+        }else{
+            $publishment = 1;
+        }
+
+        $commentData = array(
+            'chapter_content' => $chapter->getContent(),
+            'chapter_title' => $chapter->getTitle(),
+            'chapter_publishment' => $publishment
+            );
+        
+        if ($chapter->getId()) {
+            // The chapter has already been saved : update it
+            $this->getDb()->update('t_chapter', $commentData, array('chapter_id' => $chapter->getId()));
+        } else {
+            // The chapter has never been saved : insert it
+            $this->getDb()->insert('t_chapter', $commentData);
+            // Get the id of the newly created chapter and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $chapter->setId($id);
+        }
+    }
+
+    /**
+     * Removes a chapter from the database.
+     *
+     * @param integer $id The chapter id.
+     */
+    public function delete($id) {
+        // Delete the chapter
+        $this->getDb()->delete('t_chapter', array('chapter_id' => $id));
     }
 
     /**
