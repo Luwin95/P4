@@ -2,7 +2,12 @@
 
 namespace WriterBlog\Domain;
 
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+use WriterBlog\Form\Validator\Unique;
 
 class User implements UserInterface
 {
@@ -112,5 +117,18 @@ class User implements UserInterface
      */
     public function eraseCredentials() {
         // Nothing to do here
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('username', new Assert\NotBlank(array('message' => 'Ce champ ne peut être vide.')));
+        $metadata->addPropertyConstraint('username',  new Assert\Length(array('min' => 4, 'minMessage'=>'Le nom d\'utilisateur doit contenir au minimum 4 caractères')));
+        $metadata->addPropertyConstraint('password', new Assert\NotBlank(array('message' => 'Ce champ ne peut être vide.')));
+        $metadata->addPropertyConstraint('password',  new Assert\Length(array('min' => 6, 'minMessage'=>'Le mot de passe doit contenir au minimum 6 caractères')));
+        $metadata->addPropertyConstraint('username', new Unique(array('field' => 'username', 'entity' => $metadata->getReflectionClass()->getName())));
+        /*$metadata->addConstraint(new UniqueEntity(array(
+            'fields'  => 'username',
+            'message' => 'Cet utilisateur existe déjà. Veuillez entrer un autre nom d\'utilisateur',
+        )));*/
     }
 }

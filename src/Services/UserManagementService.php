@@ -23,18 +23,22 @@ class UserManagementService
 
     public function registerNewUser(User $user, $admin)
     {
+        //Fonction instanciant et paramétrant un nouvel utilisateur
         $plainPassword = $user->getPassword();
+        //Génération et assignation du sel
         $salt = substr(md5(time()), 0, 23);
         $user->setSalt($salt);
+        //Si l'utilisateur n'est pas créé par l'administrateur
         if(!$admin)
         {
+            //On assigne le rôle d'utilisateur
             $user->setRole('ROLE_USER');
         }
-        // find the default encoder
+        //On récupère l'encodeur bcrypt et on crypte le mot de passe avec le sel
         $encoder = $this->app['security.encoder.bcrypt'];
-        // compute the encoded password
         $password = $encoder->encodePassword($plainPassword, $user->getSalt());
         $user->setPassword($password);
+        //On sauvegarde l'utilisateur et on créé un message de succès en session
         $this->app['dao.user']->save($user);
         $this->app['session']->getFlashBag()->add('success', 'L\'utilisateur a été créé avec succès' );
     }

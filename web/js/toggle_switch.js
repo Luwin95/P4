@@ -1,13 +1,15 @@
 $(function(){
+    //Paramétrage du plugin bootstrap Switch
     var options = {
         onText: "Sombre",
-        offText: "Claire",
+        offText: "Clair",
         onColor: 'darkgray',
         offColor: 'default'
     };
 
     $('#toggle-switch').bootstrapSwitch(options);
 
+    //Gestion du changement de la couleur du fond au click sur le bouton
     $('#toggle-switch').on('switchChange.bootstrapSwitch', function (event, state) {
         if(!state)
         {

@@ -1,4 +1,5 @@
 $(function(){
+    //Configuration du système mce tinymce
     tinymce.init({
         selector:'#chapter_content',
         menubar:false,

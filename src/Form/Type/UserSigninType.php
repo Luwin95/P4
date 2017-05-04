@@ -22,9 +22,8 @@ class UserSigninType extends AbstractType
                 'second_options'  => array('label' => 'Répéter le mot de passe'),
             ));
     }
-
     public function getName()
     {
-        return 'user';
+        return 'userSignin';
     }
 }

@@ -12,7 +12,6 @@
                     {{ form_start(chapterForm) }}
                     <div class="row">
                         <div class="form-group">
-                                {{ form_errors(chapterForm.title) }}
                             <div class="col-sm-1 pul-right">
                                 {{ form_label(chapterForm.title, 'Titre') }}
                             </div>
@@ -21,12 +20,30 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-offset-2 col-sm-10" style="margin-top:10px;">
+                            {% if form_errors(chapterForm.title) %}
+                                <div class="alert alert-danger">
+                                    {{ form_errors(chapterForm.title) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
                     <div class="row" style ="margin-top : 20px;">  
                         <div class="col-sm-12">
                             <div class="form-group">
                                 {{ form_errors(chapterForm.content) }}
                                 {{ form_widget(chapterForm.content, {'attr' : {'class': 'form-control'} }) }}
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-offset-2 col-sm-10" style="margin-top:10px;">
+                            {% if form_errors(chapterForm.content) %}
+                                <div class="alert alert-danger">
+                                    {{ form_errors(chapterForm.content) }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">     

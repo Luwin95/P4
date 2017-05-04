@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use WriterBlog\Domain\User;
 
 class UserDAO extends DAO implements UserProviderInterface
@@ -43,6 +44,28 @@ class UserDAO extends DAO implements UserProviderInterface
             return $this->buildDomainObject($row);
         else
             throw new \Exception("No user matching id " . $id);
+    }
+
+    /**
+     * Returns a user matching the supplied username.
+     *
+     * @param integer $username The user name.
+     *
+     * @return \WriterBlog\Domain\User|throws an exception if no matching user is found
+     */
+    public function findOneByUsername($username)
+    {
+        $sql = "select * from t_user where user_name=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($username));
+
+        if($row)
+        {
+            return $this->buildDomainObject($row);
+        }else{
+            return Null;
+        }
+
+
     }
 
     /**

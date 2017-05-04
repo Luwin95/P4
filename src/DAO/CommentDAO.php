@@ -163,12 +163,11 @@ class CommentDAO extends DAO
         
 
         if ($comment->getId()) {
-            // The comment has already been saved : update it
+            //Si le commentaire existe on le met à jour
             $this->getDb()->update('t_comment', $commentData, array('comment_id' => $comment->getId()));
         } else {
-            // The comment has never been saved : insert it
+            // Sinon on sauvegarde le nouveau commentaire
             $this->getDb()->insert('t_comment', $commentData);
-            // Get the id of the newly created comment and set it on the entity.
             $id = $this->getDb()->lastInsertId();
             $comment->setId($id);
         }
@@ -180,15 +179,17 @@ class CommentDAO extends DAO
      * @param $commentId The id of the chapter
      */
     public function delete($id) {
-
+        //On recherche des éventuels commentaires enfants
         if($this->findAllByParent($id) != NULL)
         {
             $children = $this->findAllByParent($id);
             foreach($children as $child)
             {
+                //On supprimes les enfants du commentaire en appelant cette fonction
                 $this->delete($child->getId());
             }
         }
+        //On supprime le commentaire
         $this->getDb()->delete('t_comment', array('comment_id' => $id));
     }
 

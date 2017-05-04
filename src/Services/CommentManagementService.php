@@ -26,6 +26,7 @@ class CommentManagementService
 
     public function commentTabGenerator(array $comments)
     {
+        //Fonction triant d'abord les commentaires par id puis hiérarchiquement
         $commentsSorted = [];
 
         foreach($comments as $comment)
@@ -45,6 +46,7 @@ class CommentManagementService
 
     public function registerNewComment(Chapter $chapter)
     {
+        //Fonction instanciant et paramétrant un nouveau commentaire à sauvegarder
         $comment = new Comment();
         $comment->setChapter($chapter);
         $comment->setAuthor($this->app['user']);
@@ -56,6 +58,7 @@ class CommentManagementService
 
     public function reportComment($id)
     {
+        //Fonction gérant la signalisation de commentaire (signalement si le commentaire n'est pas déjà signalé)
         $commentReported = $this->app['dao.comment']->find($id);
         if(!$commentReported->getReported()) {
             $commentReported->setReported(true);

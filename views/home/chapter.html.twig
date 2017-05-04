@@ -44,13 +44,19 @@
                 {% if commentForm %}
                     {{ form_start(commentForm) }}
                     <div class="form-group">
-                        {{ form_errors(commentForm.content) }}
                         {{ form_widget(commentForm.content, { 'attr':  {
                             'rows': '4',
                             'class': 'form-control',
                             'placeholder': 'Entrez votre commentaire ici'
                         }}) }}
                     </div>
+                    <div style="margin-top:10px;">
+                        {% if  form_errors(commentForm.content) %}
+                            <div class="alert alert-danger">
+                                {{ form_errors(commentForm.content) }}
+                            </div>
+                        {% endif %}
+                        </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary" value="Commenter" />
                     </div>

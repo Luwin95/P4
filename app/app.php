@@ -18,6 +18,11 @@ $app['twig'] = $app->extend('twig', function(Twig_Environment $twig, $app) {
     return $twig;
 });
 $app->register(new Silex\Provider\ValidatorServiceProvider());
+$app->register(new Silex\Provider\ValidatorServiceProvider(), array(
+    'validator.validator_service_ids' => array(
+        'validator.unique' => 'validator.unique',
+    )
+));
 $app->register(new Silex\Provider\AssetServiceProvider(), array(
     'assets.version' => 'v1'
 ));
@@ -70,4 +75,11 @@ $app['dao.comment'] = function ($app) {
     $commentDAO->setUserDAO($app['dao.user']);
     //$commentDAO->setCommentDAO($app['dao.comment']);
     return $commentDAO;
+};
+
+$app['validator.unique'] = function ($app) {
+    $validator =  new WriterBlog\Form\Validator\UniqueValidator();
+    $validator->setUserDAO($app['dao.user']);
+
+    return $validator;
 };

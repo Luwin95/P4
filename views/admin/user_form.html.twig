@@ -6,23 +6,26 @@
 {% block pageTitle %} {{title}} {% endblock %}
 
 {% block content %}
-    {% if form_errors(userForm.password.first) %}
-        <div class="alert alert-danger">
-            {{ form_errors(userForm.password.first) }}
-        </div>
-    {% endif %}
     <div class="well">
         {% if userForm %}
             {{ form_start(userForm) }}
             <div class="row">
                 <div class="form-group">
-                    {{ form_errors(userForm.username) }}
                     <div class="col-sm-2">
                         {{ form_label(userForm.username, 'Nom d\'utilisateur') }}
                     </div>
                     <div class="col-sm-10">
                         {{ form_widget(userForm.username, {'attr' : {'class': 'form-control'} }) }}
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10" style="margin-top:10px;">
+                    {% if form_errors(userForm.username) %}
+                        <div class="alert alert-danger">
+                            {{ form_errors(userForm.username) }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="row" style="margin-top:10px;">
@@ -35,6 +38,15 @@
                             'class': 'form-control'
                         }}) }}
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10" style="margin-top:10px;">
+                    {% if form_errors(userForm.password.first) %}
+                        <div class="alert alert-danger">
+                            {{ form_errors(userForm.password.first) }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
